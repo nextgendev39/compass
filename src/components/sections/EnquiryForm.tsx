@@ -3,6 +3,7 @@
 import { useId, useState, type FormEvent } from "react";
 import { siteConfig } from "@/config/site";
 import { WhatsAppIcon } from "@/components/icons";
+import { trackEvent } from "@/lib/analytics";
 
 const fields = [
   { name: "name", label: "Your name", placeholder: "Full name", autoComplete: "name" },
@@ -36,6 +37,11 @@ export function EnquiryForm() {
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     const url = `https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(buildMessage(values))}`;
+    trackEvent("whatsapp_enquiry_submit", {
+      link_location: "contact",
+      has_vehicle: Boolean(values.vehicle.trim()),
+      has_destination: Boolean(values.destination.trim()),
+    });
     window.open(url, "_blank", "noopener,noreferrer");
   };
 

@@ -1,9 +1,8 @@
 import { brandLogos, type BrandLogo } from "@/config/brands";
 import { SectionBackdrop } from "@/components/ui/SectionBackdrop";
 import { Reveal } from "@/components/ui/Reveal";
+import { brandSymbolId } from "./brand-symbol";
 import "./marquee.css";
-
-const symbolId = (name: string) => `brand-${name.toLowerCase().replace(/[^a-z]+/g, "-")}`;
 
 // Each row gets its own brands, so a logo is never on screen in both rows at once.
 const half = Math.ceil(brandLogos.length / 2);
@@ -12,13 +11,15 @@ const rows: { brands: BrandLogo[]; reverse: boolean; duration: string }[] = [
   { brands: brandLogos.slice(half), reverse: true, duration: "54s" },
 ];
 
-/** One logo + its name. The paths live once in the sprite; this only references them. */
+/** One logo + its name. The logo is a lazily fetched SVG mask (see marquee.css). */
 function BrandItem({ brand }: { brand: BrandLogo }) {
   return (
     <li className="marquee-item">
-      <svg className="marquee-logo" aria-hidden="true">
-        <use href={`#${symbolId(brand.name)}`} />
-      </svg>
+      <span
+        className="marquee-logo"
+        aria-hidden="true"
+        style={{ "--logo": `url(/brand-logos/${brandSymbolId(brand.name)}.svg)` } as React.CSSProperties}
+      />
       <span className="marquee-name">{brand.name}</span>
     </li>
   );
@@ -32,16 +33,6 @@ export function BrandMarquee() {
       className="relative isolate overflow-hidden border-y border-white/5 bg-charcoal py-16 sm:py-20"
     >
       <SectionBackdrop pattern="road" tone="charcoal" glow="center" />
-      {/* Logo sprite: every brand's paths, defined once for the page */}
-      <svg aria-hidden="true" className="absolute size-0 overflow-hidden" focusable="false">
-        {brandLogos.map((b) => (
-          <symbol key={b.name} id={symbolId(b.name)} viewBox={b.viewBox}>
-            {b.paths.map((d, i) => (
-              <path key={i} d={d} fillRule="evenodd" />
-            ))}
-          </symbol>
-        ))}
-      </svg>
 
       <Reveal className="mx-auto max-w-7xl px-5 text-center sm:px-8">
         <p className="flex items-center justify-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-chrome">

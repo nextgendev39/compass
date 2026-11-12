@@ -70,9 +70,9 @@ export function Services() {
           />
           <Reveal delay={100} className="max-w-md">
             <p className="text-base leading-relaxed text-mist">
-              From finding the right car to getting it on the ship, every step
-              is coordinated for you — so you deal with one trusted partner
-              instead of many.
+              From finding the right car to international car shipping, every
+              step of your car export from Dubai is coordinated for you, so you
+              deal with one trusted partner instead of many.
             </p>
           </Reveal>
         </div>

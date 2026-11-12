@@ -40,7 +40,7 @@ const stages: Stage[] = [
   {
     word: "Sourced",
     step: "Vehicle Sourcing",
-    title: ["Your Trusted Partner in", "Global Car Exports"],
+    title: ["Your Trusted Car Export", "Company in the UAE"],
     caption:
       "Tell us the vehicle you want. We find it for you, check it, and ship it from Dubai to your country.",
     image: sourcingBg,
@@ -166,6 +166,32 @@ function heroProgress(section: HTMLElement) {
 export function Hero() {
   const [active, setActive] = useState(0);
   const [sceneReady, setSceneReady] = useState(false);
+  /** The 3D scene is only needed from the Loaded stage, so it isn't fetched
+   *  until the visitor scrolls past the first stage (keeps it off LCP/TBT). */
+  const [want3d, setWant3d] = useState(false);
+  /** Photos for stages 2–6 (and their overlays) are only added once the page
+   *  has loaded and gone idle, so they never compete with the first paint. */
+  const [later, setLater] = useState(false);
+  useEffect(() => {
+    let idleId = 0;
+    const go = () => {
+      idleId = window.requestIdleCallback
+        ? window.requestIdleCallback(() => setLater(true), { timeout: 1500 })
+        : window.setTimeout(() => setLater(true), 200);
+    };
+    if (document.readyState === "complete") go();
+    else window.addEventListener("load", go, { once: true });
+    return () => {
+      window.removeEventListener("load", go);
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idleId);
+      else window.clearTimeout(idleId);
+    };
+  }, []);
+  // Once idle, download the 3D module ahead of time (building the scene still
+  // waits for the scroll) so a jump straight to "Loaded" shows it promptly.
+  useEffect(() => {
+    if (later) import("./hero-scene").catch(() => {});
+  }, [later]);
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sceneRef = useRef<HeroScene | null>(null);
@@ -181,6 +207,8 @@ export function Hero() {
       section.style.setProperty("--p", p.toFixed(4));
       sceneRef.current?.setTarget(t);
       setActive(Math.min(n - 1, Math.round(t)));
+      if (t > 0.6) setWant3d(true);
+      if (t > 0.2) setLater(true);
     };
     const onScroll = () => {
       cancelAnimationFrame(frame);
@@ -198,6 +226,7 @@ export function Hero() {
 
   // 3D scene: loaded on demand, paused while the hero is off-screen.
   useEffect(() => {
+    if (!want3d) return;
     const canvas = canvasRef.current;
     const section = sectionRef.current;
     if (!canvas || !section) return;
@@ -210,7 +239,11 @@ export function Hero() {
         const scene = createHeroScene(canvas, {
           reducedMotion,
           // The car from the first stage is the one that gets loaded and shipped.
-          carImage: { src: civicCar.src, width: civicCar.width, height: civicCar.height },
+          carImage: {
+            src: `/_next/image?url=${encodeURIComponent(civicCar.src)}&w=1080&q=75`,
+            width: civicCar.width,
+            height: civicCar.height,
+          },
           loadedAnchor: section.querySelector<HTMLElement>(".hero3d-truck-deck"),
         });
         sceneRef.current = scene;
@@ -228,7 +261,7 @@ export function Hero() {
       sceneRef.current?.dispose();
       sceneRef.current = null;
     };
-  }, []);
+  }, [want3d]);
 
   // "Move to steer": pointer drives the camera and drifts the giant word.
   useEffect(() => {
@@ -286,19 +319,21 @@ export function Hero() {
               data-depth={!!s.depth}
               data-scene={s.scene}
             >
-              <Image
-                src={s.image}
-                alt=""
-                fill
-                loading="eager"
-                fetchPriority={i === 0 ? "high" : "low"}
-                placeholder="blur"
-                sizes="100vw"
-                className={`object-cover ${s.position}`}
-              />
+              {(i === 0 || later) && (
+                <Image
+                  src={s.image}
+                  alt=""
+                  fill
+                  loading={i === 0 ? "eager" : "lazy"}
+                  fetchPriority={i === 0 ? "high" : "low"}
+                  placeholder="blur"
+                  sizes="100vw"
+                  className={`object-cover ${s.position}`}
+                />
+              )}
               {s.scene === "truck" && <TruckDeck />}
-              {s.scene === "ship" && <ShipSlot />}
-              {s.scene === "hoist" && <HoistRig />}
+              {s.scene === "ship" && later && <ShipSlot />}
+              {s.scene === "hoist" && later && <HoistRig />}
             </div>
           ))}
         </div>
@@ -352,7 +387,7 @@ export function Hero() {
                   data-state={state}
                   style={{ "--ar": 1.15 } as React.CSSProperties}
                 >
-                  <ExportPapers car={civicCar} />
+                  {later && <ExportPapers car={civicCar} />}
                 </div>
               );
             if (s.info)
@@ -387,7 +422,7 @@ export function Hero() {
                 <button
                   type="button"
                   onClick={() => go(i)}
-                  aria-label={`Stage ${i + 1} of ${n}: ${s.step}`}
+                  aria-label={`${s.word}: stage ${i + 1} of ${n}, ${s.step}`}
                   aria-current={i === active ? "step" : undefined}
                   data-active={i === active}
                   data-done={i < active}
@@ -640,7 +675,7 @@ function HoistRig() {
       <div className="hero3d-hoist">
         <ContainerRoof className="hero3d-hoist-box" />
         {/* The photo's own spreader, cut out, laid back on top so it grips the roof */}
-        <Image src={hoistSpreader} alt="" sizes="40vw" loading="eager" className="hero3d-hoist-spreader" />
+        <Image src={hoistSpreader} alt="" sizes="40vw" loading="lazy" className="hero3d-hoist-spreader" />
       </div>
     </div>
   );
@@ -675,7 +710,7 @@ function ExportPapers({ car }: { car: StaticImageData }) {
           </p>
           {k === 0 && (
             <div className="mt-2 rounded-md bg-[#eef0f3] p-1.5">
-              <Image src={car} alt="" sizes="200px" loading="eager" className="h-auto w-full" />
+              <Image src={car} alt="" sizes="200px" loading="lazy" className="h-auto w-full" />
             </div>
           )}
           <dl className="mt-2.5 space-y-1.5">

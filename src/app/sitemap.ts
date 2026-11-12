@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteConfig.siteUrl}/`,
       changeFrequency: "monthly",
       priority: 1,
+      images: [`${siteConfig.siteUrl}/og.jpg`],
     },
   ];
 }

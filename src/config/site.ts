@@ -74,12 +74,14 @@ export const siteConfig = {
   },
 
   seo: {
-    title: "Car Export from Dubai, UAE | Vehicle Sourcing & Shipping | Compass Car Export",
+    title: "Car Export Company in Dubai, UAE | Compass Car Export",
     description:
-      "Dubai-based car export company. We source vehicles to your requirements, check them before export, handle the export paperwork and arrange international car shipping.",
+      "Car export company in Dubai, UAE. Luxury and used car export from Dubai with vehicle sourcing, inspection, export paperwork and international car shipping.",
     keywords: [
-      "car export Dubai",
-      "car export UAE",
+      "car export company UAE",
+      "car export from Dubai",
+      "luxury car export",
+      "used car export",
       "international car export",
       "export cars from Dubai",
       "vehicle sourcing Dubai",

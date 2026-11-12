@@ -66,6 +66,14 @@ body {
   color: var(--color-ink);
 }
 
+/* Below-the-fold sections: skip rendering (and fetching their images/sprites)
+   until they approach the viewport. */
+main > section:not(#home),
+body > footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
 /* Scroll-reveal (toggled by <Reveal />) */
 .reveal {
   opacity: 0;

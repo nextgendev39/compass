@@ -11,8 +11,9 @@ export function Logo() {
         <span className="text-chrome-gradient font-brand text-[17px] uppercase tracking-[0.12em] sm:text-[19px]">
           {primary}
         </span>
+        {/* keeps the accessible name "Compass Car Export", not "CompassCar Export" */}{" "}
         {secondary && (
-          <span className="mt-1 bg-chrome-gradient rounded-[3px] px-1.5 py-[3px] text-right text-[9px] font-bold uppercase tracking-[0.2em] text-ink">
+          <span className="mt-1 bg-chrome-gradient rounded-[3px] px-1.5 py-[3px] text-right text-[9px] font-semibold uppercase tracking-[0.2em] text-ink">
             {secondary}
           </span>
         )}

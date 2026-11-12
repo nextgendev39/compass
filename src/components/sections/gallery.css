@@ -99,56 +99,9 @@
   }
 }
 
-/* ── Interior & detail strip: two copies drift left and loop ─────────── */
-.gallery-strip {
-  overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-}
-.gallery-strip-track {
-  display: flex;
-  width: max-content;
-  animation: gallery-drift 70s linear infinite;
-}
-.gallery-strip:hover .gallery-strip-track {
-  animation-play-state: paused;
-}
-.gallery-strip-item {
-  position: relative;
-  flex-shrink: 0;
-  width: min(80vw, 20rem);
-  aspect-ratio: 4 / 3;
-  margin-right: 1rem;
-}
-@media (min-width: 640px) {
-  .gallery-strip-item {
-    width: 26rem;
-    margin-right: 1.25rem;
-  }
-}
-@keyframes gallery-drift {
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .gallery-img,
   .gallery-caption {
     transition: none;
-  }
-  .gallery-strip {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    mask-image: none;
-  }
-  .gallery-strip-track {
-    animation: none;
-    padding-inline: 1.25rem;
-  }
-  .gallery-strip-item {
-    scroll-snap-align: start;
-  }
-  .gallery-strip-item[aria-hidden="true"] {
-    display: none;
   }
 }

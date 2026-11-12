@@ -39,7 +39,7 @@ export function Navbar() {
           scrolled ? "h-16" : "h-20"
         }`}
       >
-        <a href="#home" aria-label={`${siteConfig.businessName} — home`}>
+        <a href="#home" aria-label={`${siteConfig.logo.primary} ${siteConfig.logo.secondary} — home`}>
           <Logo />
         </a>
 

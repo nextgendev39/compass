@@ -1,5 +1,5 @@
 import Image from "next/image";
-import aboutImage from "@/assets/images/black-lexus-lx-dubai.jpg";
+import aboutImage from "@/assets/images/red-ferrari-front.jpg";
 import { siteConfig } from "@/config/site";
 import { SectionBackdrop } from "@/components/ui/SectionBackdrop";
 import { SectionLink } from "@/components/ui/SectionLink";
@@ -38,11 +38,11 @@ export function About() {
           <div className="relative aspect-square overflow-hidden rounded-2xl sm:aspect-[4/5]">
             <Image
               src={aboutImage}
-              alt="Front view of a black Lexus LX SUV in Dubai"
+              alt="Red Ferrari supercar with white racing stripes, front view"
               fill
               placeholder="blur"
               sizes="(min-width: 1024px) 40vw, 100vw"
-              className="object-cover object-[50%_center]"
+              className="object-cover object-[50%_60%]"
             />
             <div
               aria-hidden="true"
@@ -86,8 +86,8 @@ export function About() {
                 UAE and ship them abroad with confidence.
               </p>
               <p>
-                Whether you&rsquo;re after a Lexus LX, a Toyota Land Cruiser
-                or another model, we take care of the details that make
+                Whether it&rsquo;s a luxury car export or a used car export,
+                a Lexus LX, a Toyota Land Cruiser or another model, we take care of the details that make
                 international car exports feel complicated: finding the right
                 vehicle, checking its condition, preparing the paperwork and
                 arranging shipping to your destination. You get a single point
