@@ -1,0 +1,121 @@
+/* Brand marquee: two copies of each row slide left (or right) by exactly one
+   copy, so the loop is seamless. Items carry their own trailing space (no gap
+   on the flex parent), which keeps both copies the same width. */
+.marquee {
+  overflow: hidden;
+  /* room above/below so a lifted, shadowed tile is never clipped */
+  padding-block: 0.75rem 1.25rem;
+  margin-block: -0.75rem -1.25rem;
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll var(--duration, 50s) linear infinite;
+}
+.marquee[data-reverse="true"] .marquee-track {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+.marquee-group {
+  display: flex;
+  flex-shrink: 0;
+}
+@keyframes marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 8.5rem;
+  margin-right: 1.25rem;
+  padding: 1.1rem 0.75rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 1rem;
+  /* solid, so the section pattern never shows through the tile */
+  background: linear-gradient(180deg, #1a1b1f, #141518);
+  color: rgba(238, 240, 243, 0.6);
+  transition:
+    color 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.5s ease,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* thin gold highlight along the top edge, revealed on hover */
+.marquee-item::before {
+  content: "";
+  position: absolute;
+  inset: -1px 18% auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold-light), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.marquee-logo {
+  width: 100%;
+  height: 2.5rem;
+  fill: currentColor;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.marquee-name {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-mist);
+  transition: color 0.4s ease;
+}
+.marquee-item:hover {
+  color: var(--color-gold-light);
+  border-color: color-mix(in srgb, var(--color-gold) 40%, transparent);
+  box-shadow:
+    0 14px 28px -14px rgba(0, 0, 0, 0.9),
+    0 0 0 1px color-mix(in srgb, var(--color-gold) 10%, transparent),
+    0 10px 30px -18px color-mix(in srgb, var(--color-gold) 55%, transparent);
+  transform: translateY(-4px);
+}
+.marquee-item:hover::before {
+  opacity: 0.9;
+}
+.marquee-item:hover .marquee-logo {
+  transform: scale(1.06);
+}
+.marquee-item:hover .marquee-name {
+  color: var(--color-ivory);
+}
+
+@media (min-width: 640px) {
+  .marquee-item {
+    width: 10.5rem;
+    margin-right: 1.75rem;
+  }
+  .marquee-logo {
+    height: 3rem;
+  }
+}
+
+/* Reduced motion: no auto-scroll; the row becomes a swipeable strip. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+    mask-image: none;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  .marquee-group + .marquee-group {
+    display: none;
+  }
+}

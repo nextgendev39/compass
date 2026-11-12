@@ -1,26 +1,310 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Always emitted: the marquee and gallery CSS use these directly. */
+@theme static {
+  --color-gold: #c9a45c;
+  --color-gold-light: #e6cf9a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  --color-ink: #0a0a0b;
+  --color-charcoal: #131315;
+  --color-graphite: #1c1c1f;
+  --color-line: #2a2a2e;
+  --color-mist: #a1a1aa;
+  --color-ivory: #f5f3ee;
+  --color-chrome: #c4c8cf;
+  --color-chrome-light: #eef0f3;
+  --color-chrome-dark: #7d828c;
+  --color-whatsapp: #25d366;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --font-sans: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-saira), ui-sans-serif, system-ui, sans-serif;
+  --font-brand: var(--font-michroma), var(--font-saira), ui-sans-serif, sans-serif;
+
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slow-zoom: slow-zoom 18s ease-out both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes slow-zoom {
+    from {
+      transform: scale(1.12);
+    }
+    to {
+      transform: scale(1);
+    }
   }
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  background: var(--color-ink);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-ink);
+  background-image: radial-gradient(
+    140% 60% at 50% -10%,
+    rgba(143, 163, 184, 0.07),
+    transparent 60%
+  );
+  color: var(--color-ivory);
+}
+
+::selection {
+  background: var(--color-chrome);
+  color: var(--color-ink);
+}
+
+/* Scroll-reveal (toggled by <Reveal />) */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Polished-chrome text: dark edge → highlight → steel → highlight */
+@utility text-chrome-gradient {
+  background: linear-gradient(
+    100deg,
+    #7d828c 0%,
+    #f6f7f9 30%,
+    #a9b0bb 52%,
+    #eef1f5 72%,
+    #8fa3b8 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: chrome-sheen 8s ease-in-out infinite alternate;
+}
+@keyframes chrome-sheen {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+/* Brushed-metal surface for primary buttons and plates */
+@utility bg-chrome-gradient {
+  background: linear-gradient(
+    115deg,
+    #8a9099 0%,
+    #eef0f3 28%,
+    #b9bfc8 50%,
+    #f6f7f9 70%,
+    #9aa2ad 100%
+  );
+}
+
+/* Subtle carbon-fibre weave for dark surfaces */
+@utility bg-carbon {
+  background-color: var(--color-ink);
+  background-image:
+    radial-gradient(120% 80% at 50% 0%, rgba(143, 163, 184, 0.08), transparent 60%),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.018) 0 2px, transparent 2px 6px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.25) 0 2px, transparent 2px 6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Export Journey (scroll-driven, see ExportJourney.tsx) ───────────
+   --p : section progress 0 → 1
+   --l : per-stage local progress, -0.5 (entering) → 0.5 (leaving)      */
+.journey {
+  --p: 0;
+}
+.journey-stage {
+  --l: 0;
+  position: absolute;
+  inset: 0;
+  will-change: opacity;
+}
+.j-word {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(6rem, 22vw, 22rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(196, 200, 207, 0.18);
+  transform: translate(calc(-50% + var(--l) * -30vw), -50%);
+  pointer-events: none;
+  user-select: none;
+}
+.j-copy {
+  transform: translateY(calc(var(--l) * -90px));
+}
+.j-visual {
+  transform: perspective(1600px) rotateY(calc(var(--l) * -22deg))
+    rotateX(calc(var(--l) * 6deg)) translateX(calc(var(--l) * -10%))
+    scale(calc(1 - var(--l) * var(--l) * 0.5));
+  transform-style: preserve-3d;
+}
+.j-photo img {
+  transform: scale(calc(1.15 - (var(--l) + 0.5) * 0.15));
+}
+.j-floor {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  bottom: -10%;
+  height: 55%;
+  background-image:
+    linear-gradient(rgba(196, 200, 207, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196, 200, 207, 0.09) 1px, transparent 1px);
+  background-size: 70px 70px;
+  background-position: 0 calc(var(--p) * 1400px);
+  transform: perspective(500px) rotateX(62deg);
+  transform-origin: bottom;
+  mask-image: linear-gradient(to top, black 10%, transparent 85%);
+}
+.j-progress {
+  transform-origin: left;
+  transform: scaleX(var(--p));
+}
+
+/* Inspection: chrome scan line + checklist */
+.j-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  top: clamp(0%, calc((var(--l) + 0.45) * 110%), 100%);
+  background: linear-gradient(90deg, transparent, #eef0f3, transparent);
+  box-shadow: 0 0 24px 6px rgba(238, 240, 243, 0.35);
+}
+.j-check {
+  --k: 0;
+  opacity: calc((var(--l) + 0.3 - var(--k) * 0.08) * 10);
+  transform: translateX(
+    calc(clamp(0, 1 - (var(--l) + 0.3 - var(--k) * 0.08) * 10, 1) * 24px)
+  );
+}
+
+/* Documents: cards drop into a stack */
+.j-doc {
+  --k: 0;
+  transform: translateY(
+      clamp(0%, calc((0.02 + var(--k) * 0.1 - var(--l)) * 500%), 160%)
+    )
+    rotate(calc(var(--k) * 2.5deg - 2.5deg));
+}
+
+/* Shipping: route draws, destination appears */
+.j-route {
+  stroke-dashoffset: clamp(0, calc(1 - (var(--l) + 0.4) * 1.7), 1);
+}
+.j-dest {
+  opacity: calc((var(--l) + 0.4) * 1.7 - 0.9);
+}
+
+/* Progress rail (desktop) */
+.j-rail-dot {
+  display: inline-flex;
+  height: 1.75rem;
+  min-width: 1.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-mist);
+  transition: all 0.4s;
+}
+.j-rail-label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-chrome);
+  transition: max-width 0.5s, margin 0.5s;
+}
+.j-rail-line {
+  display: block;
+  height: 1px;
+  width: 1.5rem;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background 0.4s;
+}
+.j-rail[data-active="true"] .j-rail-dot {
+  border-color: var(--color-chrome);
+  background: var(--color-chrome);
+  color: var(--color-ink);
+}
+.j-rail[data-active="true"] .j-rail-label {
+  max-width: 8rem;
+  margin: 0 0.25rem 0 0.4rem;
+}
+.j-rail[data-done="true"] .j-rail-dot {
+  border-color: rgba(196, 200, 207, 0.6);
+  color: var(--color-chrome);
+}
+.j-rail[data-done="true"] .j-rail-line {
+  background: rgba(196, 200, 207, 0.6);
+}
+
+/* Reduced motion: unpin and show every step statically */
+.journey[data-static] {
+  height: auto !important;
+}
+.journey[data-static] .j-sticky {
+  position: relative;
+  height: auto;
+}
+.journey[data-static] .journey-stage {
+  --l: 0.3;
+  position: relative;
+  min-height: 90svh;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.journey[data-static] .j-visual,
+.journey[data-static] .j-copy,
+.journey[data-static] .j-photo img {
+  transform: none;
 }

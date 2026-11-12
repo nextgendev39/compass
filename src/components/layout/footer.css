@@ -1,0 +1,184 @@
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.footer-topline {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-gold) 55%, transparent), transparent);
+}
+
+.footer-col-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-gold-light);
+}
+
+.footer-link {
+  position: relative;
+  font-size: 0.9rem;
+  color: rgba(245, 243, 238, 0.72);
+  transition: color 0.3s ease;
+}
+.footer-link:hover {
+  color: var(--color-ivory);
+}
+/* underline grows from the left on hover */
+.footer-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1px;
+  width: 0;
+  background: var(--color-gold);
+  transition: width 0.35s ease;
+}
+.footer-link:hover::after {
+  width: 100%;
+}
+
+.footer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-mist);
+}
+
+.footer-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-mist);
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+.footer-social:hover {
+  color: var(--color-gold-light);
+  border-color: color-mix(in srgb, var(--color-gold) 50%, transparent);
+}
+
+/* Signature wordmark — full width, fading into the page edge below */
+.footer-brand-wrap {
+  padding: 0 1rem 2.25rem;
+  text-align: center;
+}
+.footer-brand {
+  font-family: var(--font-brand);
+  font-size: clamp(2rem, 11.6vw, 12rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  background: linear-gradient(
+    100deg,
+    #6f747d 0%,
+    #eef0f3 18%,
+    #9aa1ab 34%,
+    #c9a45c 48%,
+    #e6cf9a 54%,
+    #a9b0bb 68%,
+    #f6f7f9 82%,
+    #6f747d 100%
+  );
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* letters fade out towards their base */
+  -webkit-mask-image: linear-gradient(180deg, #000 35%, rgba(0, 0, 0, 0.18) 100%);
+  mask-image: linear-gradient(180deg, #000 35%, rgba(0, 0, 0, 0.18) 100%);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.8s cubic-bezier(0.65, 0, 0.35, 1);
+  animation: footer-sheen 10s ease-in-out infinite alternate;
+}
+.is-visible .footer-brand {
+  clip-path: inset(0 0 0 0);
+}
+.footer-brand-sub {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-mist);
+}
+.footer-brand-sub > span {
+  width: 2.5rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-gold) 60%, transparent);
+}
+@keyframes footer-sheen {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+.footer-top-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-mist);
+  transition: color 0.3s ease;
+}
+.footer-top-link:hover {
+  color: var(--color-gold-light);
+}
+.footer-top-icon {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+.footer-top-link:hover .footer-top-icon {
+  border-color: color-mix(in srgb, var(--color-gold) 55%, transparent);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 639px) {
+  .footer-brand-sub {
+    gap: 0.6rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+  }
+  .footer-brand-sub > span {
+    width: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-brand {
+    animation: none;
+    clip-path: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,79 @@
+/* Section backgrounds (see SectionBackdrop.tsx). Every motif is an inline SVG
+   data URI kept at very low contrast, so text stays crisp and nothing loads. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+  --glow-x: 85%;
+  --glow-y: 10%;
+  background:
+    radial-gradient(60% 55% at var(--glow-x) var(--glow-y), rgba(201, 164, 92, 0.1), transparent 70%),
+    var(--backdrop-base);
+}
+.backdrop[data-tone="charcoal"] {
+  --backdrop-base: linear-gradient(180deg, #121316 0%, #0e0f12 55%, #0b0b0d 100%);
+}
+.backdrop[data-tone="navy"] {
+  --backdrop-base: linear-gradient(180deg, #0c1422 0%, #0a101a 55%, #0a0b0f 100%);
+}
+.backdrop[data-glow="left"] {
+  --glow-x: 12%;
+}
+.backdrop[data-glow="center"] {
+  --glow-x: 50%;
+  --glow-y: 0%;
+}
+
+.backdrop-pattern {
+  position: absolute;
+  inset: 0;
+  /* fade the motif out towards the edges so it never competes with content */
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, #000 35%, transparent 100%);
+}
+
+/* Geometric automotive lines: fine diagonal "speed lines" */
+.backdrop-lines {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.045'%3E%3Cpath d='M0 160L160 0M-80 160L80 0M80 160L240 0'/%3E%3C/g%3E%3Cpath d='M0 120L120 0' stroke='%23c9a45c' stroke-opacity='.07' fill='none'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* Stacked container silhouettes; the corrugation is a dashed stroke */
+.backdrop-containers {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='112'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.05'%3E%3Crect x='4' y='4' width='112' height='48' rx='2'/%3E%3Crect x='124' y='4' width='112' height='48' rx='2'/%3E%3Crect x='-56' y='60' width='112' height='48' rx='2'/%3E%3Crect x='64' y='60' width='112' height='48' rx='2'/%3E%3Crect x='184' y='60' width='112' height='48' rx='2'/%3E%3C/g%3E%3Cg stroke='%23ffffff' stroke-opacity='.025' stroke-width='40' stroke-dasharray='1 7'%3E%3Cpath d='M10 28H112M130 28H232M70 84H172M190 84H240M0 84H52'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 240px 112px;
+}
+
+/* Road: edge lines, gold lane dashes and a little asphalt speckle */
+.backdrop-road {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M0 24H240M0 216H240' stroke='%23ffffff' stroke-opacity='.04'/%3E%3Cpath d='M12 120H92M132 120H212' stroke='%23c9a45c' stroke-opacity='.09' stroke-width='3'/%3E%3Cg fill='%23ffffff' fill-opacity='.04'%3E%3Ccircle cx='30' cy='60' r='1'/%3E%3Ccircle cx='170' cy='44' r='1'/%3E%3Ccircle cx='96' cy='170' r='1'/%3E%3Ccircle cx='210' cy='182' r='1'/%3E%3Ccircle cx='58' cy='196' r='1'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+/* Shipping routes: a globe graticule with dotted lanes fanning out from Dubai */
+.backdrop-routes {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600' preserveAspectRatio='xMidYMid slice'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.045'%3E%3Cellipse cx='600' cy='300' rx='120' ry='300'/%3E%3Cellipse cx='600' cy='300' rx='260' ry='300'/%3E%3Cellipse cx='600' cy='300' rx='400' ry='300'/%3E%3Cellipse cx='600' cy='300' rx='540' ry='300'/%3E%3Cpath d='M600 0V600M0 100H1200M0 200H1200M0 300H1200M0 400H1200M0 500H1200'/%3E%3C/g%3E%3Cg fill='none' stroke='%23c9a45c' stroke-opacity='.3' stroke-width='1.4' stroke-dasharray='2 7' stroke-linecap='round'%3E%3Cpath d='M760 260Q470 40 180 200'/%3E%3Cpath d='M760 260Q650 140 560 180'/%3E%3Cpath d='M760 260Q680 360 600 390'/%3E%3Cpath d='M760 260Q880 160 990 220'/%3E%3Cpath d='M760 260Q940 320 1040 450'/%3E%3Cpath d='M760 260Q520 300 300 430'/%3E%3C/g%3E%3Cg fill='%23c9a45c' fill-opacity='.4'%3E%3Ccircle cx='180' cy='200' r='3'/%3E%3Ccircle cx='560' cy='180' r='3'/%3E%3Ccircle cx='600' cy='390' r='3'/%3E%3Ccircle cx='990' cy='220' r='3'/%3E%3Ccircle cx='1040' cy='450' r='3'/%3E%3Ccircle cx='300' cy='430' r='3'/%3E%3Ccircle cx='760' cy='260' r='5'/%3E%3C/g%3E%3Ccircle cx='760' cy='260' r='12' fill='none' stroke='%23c9a45c' stroke-opacity='.35'/%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: center;
+}
+
+/* One large side-profile vehicle outline, drawn like a technical sketch */
+.backdrop-outline {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 200'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.07' stroke-width='1.2' stroke-linejoin='round'%3E%3Cpath d='M20 150C20 130 32 118 62 112L152 100C192 70 240 52 300 50H380C430 52 470 70 512 100L560 108C580 112 590 125 590 140V152H540A35 35 0 0 0 470 152H190A35 35 0 0 0 120 152H20Z'/%3E%3Cpath d='M176 100L212 70C240 60 270 58 300 58H372C412 60 444 74 474 100Z'/%3E%3Cpath d='M318 58V100'/%3E%3Ccircle cx='155' cy='152' r='28'/%3E%3Ccircle cx='155' cy='152' r='14'/%3E%3Ccircle cx='505' cy='152' r='28'/%3E%3Ccircle cx='505' cy='152' r='14'/%3E%3C/g%3E%3Cpath d='M0 182H600' stroke='%23c9a45c' stroke-opacity='.18' stroke-dasharray='6 10'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23ffffff' fill-opacity='.05'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, repeat;
+  background-size: min(90%, 1100px) auto, 32px 32px;
+  background-position: 105% 92%, 0 0;
+}
+
+/* Fine grain so the gradients read as a soft material, not flat black */
+.backdrop-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
