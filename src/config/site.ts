@@ -15,6 +15,9 @@
 
 export const siteConfig = {
   businessName: "Compass Trading LLC FZ",
+  // The name people search for (matches the domain); used as the site name in
+  // titles, link previews and structured data. The logo keeps "Compass Car Export".
+  searchName: "Compass Trading LLC",
   // Shown in the logo: wordmark, then the small silver plate underneath.
   logo: { primary: "Compass", secondary: "Car Export" },
   tagline: "Dubai-Based Vehicle Export Specialists",
@@ -74,10 +77,12 @@ export const siteConfig = {
   },
 
   seo: {
-    title: "Car Export Company in Dubai, UAE | Compass Car Export",
+    title: "Car Export Company in Dubai, UAE | Compass Trading LLC",
     description:
-      "Car export company in Dubai, UAE. Luxury and used car export from Dubai with vehicle sourcing, inspection, export paperwork and international car shipping.",
+      "Compass Trading LLC is a car export company in Dubai, UAE: vehicle sourcing, inspection, export paperwork and international car shipping.",
     keywords: [
+      "Compass Trading LLC",
+      "Compass Car Export",
       "car export company UAE",
       "car export from Dubai",
       "luxury car export",

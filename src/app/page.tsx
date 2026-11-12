@@ -10,7 +10,12 @@ import { Gallery } from "@/components/sections/Gallery";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { Contact } from "@/components/sections/Contact";
 
-const brandName = `${siteConfig.logo.primary} ${siteConfig.logo.secondary}`;
+const brandName = siteConfig.searchName;
+// Other names people may search for: legal name and the logo wordmark.
+const alternateName = [
+  siteConfig.businessName,
+  `${siteConfig.logo.primary} ${siteConfig.logo.secondary}`,
+];
 const abs = (path: string) => new URL(path, siteConfig.siteUrl).toString();
 const sameAs = Object.values(siteConfig.social).filter(Boolean);
 
@@ -45,6 +50,7 @@ const jsonLd = {
       "@type": "Organization",
       "@id": abs("/#organization"),
       name: brandName,
+      alternateName,
       legalName: siteConfig.businessName,
       url: abs("/"),
       logo: { "@type": "ImageObject", url: abs("/logo.png") },
@@ -60,6 +66,7 @@ const jsonLd = {
       "@type": "AutomotiveBusiness",
       "@id": abs("/#business"),
       name: brandName,
+      alternateName,
       description: siteConfig.seo.description,
       url: abs("/"),
       image: abs("/og.jpg"),
@@ -83,6 +90,7 @@ const jsonLd = {
       "@id": abs("/#website"),
       url: abs("/"),
       name: brandName,
+      alternateName,
       inLanguage: "en",
       publisher: { "@id": abs("/#organization") },
     },

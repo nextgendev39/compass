@@ -352,7 +352,7 @@ export function Hero() {
         {/* Giant outlined stage word (behind the 3D scene) */}
         <div
           aria-hidden="true"
-          className="hero3d-giant pointer-events-none absolute inset-x-0 top-24 -z-10 sm:top-28"
+          className="hero3d-giant pointer-events-none absolute inset-x-0 top-24 -z-10 max-sm:hidden sm:top-28"
         >
           <div className="hero3d-copy mx-auto grid max-w-7xl px-5 sm:px-8">
             {stages.map((s, i) => (
@@ -408,7 +408,7 @@ export function Hero() {
         {/* Phones: the copy fills the lower screen, so fade the 3D out behind it */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[64%] bg-gradient-to-t from-ink via-ink/90 to-transparent sm:hidden"
+          className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[58%] bg-gradient-to-t from-ink via-ink/90 to-transparent sm:hidden"
         />
 
         {/* Stage rail (desktop) */}
@@ -442,12 +442,12 @@ export function Hero() {
           <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-end lg:justify-between">
             {/* Copy */}
             <div className="max-w-2xl">
-              <p className="flex animate-fade-up items-center gap-3 font-brand text-[10px] uppercase tracking-[0.3em] text-chrome sm:text-[11px]">
+              <p className="hidden animate-fade-up items-center gap-3 font-brand text-[10px] uppercase tracking-[0.3em] text-chrome sm:flex sm:text-[11px]">
                 <span className="h-px w-8 bg-chrome-gradient" aria-hidden="true" />
                 {siteConfig.tagline}
               </p>
 
-              <div className="hero3d-copy mt-5 grid">
+              <div className="hero3d-copy grid sm:mt-5">
                 {stages.map((s, i) => {
                   const Tag = i === active ? "h1" : "p";
                   return (
@@ -468,7 +468,7 @@ export function Hero() {
                           className="text-chrome-gradient italic"
                         />
                       </Tag>
-                      <p className="hero3d-line hero3d-line-late mt-4 max-w-xl text-[15px] leading-relaxed text-ivory/75 sm:mt-5 sm:text-lg">
+                      <p className="hero3d-line hero3d-line-late mt-3 max-w-xl text-[15px] leading-relaxed text-ivory/75 sm:mt-5 sm:text-lg">
                         {s.caption}
                       </p>
                     </div>
@@ -476,9 +476,13 @@ export function Hero() {
                 })}
               </div>
 
-              <div className="mt-6 flex animate-fade-up flex-col gap-3 [animation-delay:360ms] sm:mt-8 sm:flex-row sm:gap-4">
-                <WhatsAppButton />
-                <CallButton />
+              {/* Phones: both actions on one row with short labels */}
+              <div className="mt-5 grid animate-fade-up grid-cols-[1.35fr_1fr] gap-3 [animation-delay:360ms] sm:mt-8 sm:flex sm:gap-4">
+                <WhatsAppButton className="max-sm:h-12 max-sm:px-4">
+                  <span className="sm:hidden">WhatsApp Us</span>
+                  <span className="max-sm:hidden">Contact Us on WhatsApp</span>
+                </WhatsAppButton>
+                <CallButton className="max-sm:h-12 max-sm:px-4" />
               </div>
 
               <p
@@ -491,14 +495,15 @@ export function Hero() {
             </div>
 
             {/* Counter + controls */}
-            <div className="flex shrink-0 flex-col gap-4 lg:items-end">
+            {/* Phones: one compact row, counter left and arrows right */}
+            <div className="flex shrink-0 items-center justify-between gap-4 sm:flex-col sm:items-stretch lg:items-end">
               <p className="flex items-baseline gap-2.5" aria-hidden="true">
                 <span className="hero3d-flipstack grid">
                   {stages.map((s, i) => (
                     <span
                       key={s.word}
                       data-active={i === active}
-                      className="hero3d-flip font-display text-5xl leading-none font-bold text-ivory sm:text-7xl"
+                      className="hero3d-flip font-display text-3xl leading-none font-bold text-ivory sm:text-7xl"
                     >
                       {pad(i)}
                     </span>
@@ -519,7 +524,7 @@ export function Hero() {
               </p>
 
               <div className="flex items-center gap-3">
-                <div className="relative h-px w-full min-w-40 overflow-hidden bg-white/15 lg:w-48">
+                <div className="relative h-px w-full min-w-40 overflow-hidden bg-white/15 max-sm:hidden lg:w-48">
                   <span className="hero3d-scrollbar absolute inset-0 bg-chrome-gradient" />
                 </div>
                 <ControlButton label="Previous stage" onClick={() => go(active - 1)} disabled={active === 0}>
